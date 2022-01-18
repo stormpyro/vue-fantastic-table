@@ -1,15 +1,15 @@
-### Vue Fantastic Table
+# Vue Fantastic Table
 
 A great vue table with material design and all the power of
 jquery datatables features.
 
-## Install
+### Install
 
 ```bash
 npm i vue-fantastic-table
 ```
 
-## Usage
+### Usage
 
 ```bash
 import VueFantasticTable from "vue-fantastic-table"
