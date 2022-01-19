@@ -29,7 +29,19 @@ export default Vue.extend({
       { field: "experience", label: "Experience" },
       { field: "investor", label: "Investor" },
     ],
-    rows: [],
+    rows: [
+      {
+        name: "Renatto",
+        age: 26,
+        sex: "M",
+        district: "La Perla",
+        university: "UNFV",
+        carrer: "Ing. Informatica",
+        job: "Software Developer",
+        experience: 2,
+        investor: "Yes",
+      },
+    ],
   }),
   methods: {
     callRequest: function () {

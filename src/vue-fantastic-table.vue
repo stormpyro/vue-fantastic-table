@@ -96,8 +96,12 @@ export default /*#__PURE__*/ {
       const globalProps = this.headers.map(({ field }) => field).sort();
       return data.every((element) => {
         const rowProps = Object.keys(element).sort();
-        globalProps.length == rowProps.length &&
-          rowProps.every((prop, idx) => prop == globalProps[idx]);
+        return (
+          globalProps.length == rowProps.length &&
+          rowProps.every((prop, idx) => {
+            return prop == globalProps[idx];
+          })
+        );
       });
     },
     isVisible: function (element) {
