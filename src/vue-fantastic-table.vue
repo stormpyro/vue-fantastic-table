@@ -35,7 +35,7 @@ export default /*#__PURE__*/ {
     },
     responsive: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data: () => ({
@@ -89,24 +89,29 @@ export default /*#__PURE__*/ {
       return columns;
     },
     responsiveMode: function () {
-      const widthDifference = document.documentElement.clientWidth - this.width;
-      this.width = document.documentElement.clientWidth;
-      this.height = document.documentElement.clientHeight;
+      if (this.responsive) {
+        const widthDifference =
+          document.documentElement.clientWidth - this.width;
+        this.width = document.documentElement.clientWidth;
+        this.height = document.documentElement.clientHeight;
 
-      if (this.tableIsGrower) {
-        const columns = this.getOnlyVisibleColumns();
-        for (const cell of columns[columns.length - 1]) {
-          cell.classList.add("hide");
-        }
-      }
-
-      if (widthDifference > 10 && !this.tableIsGrower) {
-        const columns = this.getAllColumns();
-        const visibleColumns = this.getOnlyVisibleColumns();
-        if (columns[visibleColumns.length])
-          for (const cell of columns[visibleColumns.length]) {
-            cell.classList.remove("hide");
+        if (this.tableIsGrower) {
+          const columns = this.getOnlyVisibleColumns();
+          for (const cell of columns[columns.length - 1]) {
+            cell.classList.add("hide");
           }
+        }
+
+        if (widthDifference > 10 && !this.tableIsGrower) {
+          const columns = this.getAllColumns();
+          const visibleColumns = this.getOnlyVisibleColumns();
+          if (columns[visibleColumns.length])
+            for (const cell of columns[visibleColumns.length]) {
+              cell.classList.remove("hide");
+            }
+        }
+      } else {
+        window.removeEventListener("resize", this.responsiveMode);
       }
     },
   },

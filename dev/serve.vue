@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <vue-fantastic-table :headers="headers" :rows="rows" />
+    <vue-fantastic-table responsive :headers="headers" :rows="rows" />
   </div>
 </template>
 <script>
