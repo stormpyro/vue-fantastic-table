@@ -1,5 +1,5 @@
 <template>
-  <table class="dark" ref="fantasticTable">
+  <table ref="fantasticTable">
     <thead>
       <tr>
         <th ref="headers" :key="index" v-for="({ label }, index) in headers">
@@ -15,13 +15,25 @@
       </tr>
     </tbody>
     <tbody v-else>
-      <tr ref="rows" :key="index" v-for="(data, index) in serverData || rows">
+      <tr v-if="!validData">
+        <td :colspan="headers.length">
+          <slot name="loading">Not valid data.</slot>
+        </td>
+      </tr>
+      <tr v-else-if="tableData.length == 0">
+        <td :colspan="headers.length">
+          <slot name="loading">Empty Data</slot>
+        </td>
+      </tr>
+      <tr v-else ref="rows" :key="index" v-for="(data, index) in tableData">
         <td
           ref="cells"
           :key="index + prop_idx"
           v-for="(property, prop_idx) in Object.keys(data)"
         >
-          {{ data[property] }}
+          <slot name="">
+            {{ data[property] }}
+          </slot>
         </td>
       </tr>
     </tbody>
@@ -45,17 +57,24 @@ export default /*#__PURE__*/ {
     },
   },
   data: () => ({
-    width: document.documentElement.clientWidth,
     height: document.documentElement.clientHeight,
     loading: false,
-    serverData: null,
+    tableData: [],
+    validData: false,
+    width: document.documentElement.clientWidth,
   }),
   created: async function () {
     if (typeof this.rows == "function") {
       this.loading = true;
-      this.serverData = await this.rows();
+      const rows = await this.rows();
       this.loading = false;
+      this.validData = this.validateData(rows);
+      console.log(this.validData);
+      if (this.validData) this.tableData = rows;
+      return;
     }
+    this.validData = this.validateData(this.rows);
+    if (this.validData) this.tableData = this.rows;
   },
   mounted: function () {
     if (this.responsive) window.addEventListener("resize", this.responsiveMode);
@@ -73,6 +92,14 @@ export default /*#__PURE__*/ {
     },
   },
   methods: {
+    validateData: function (data) {
+      const globalProps = this.headers.map(({ field }) => field).sort();
+      return data.every((element) => {
+        const rowProps = Object.keys(element).sort();
+        globalProps.length == rowProps.length &&
+          rowProps.every((prop, idx) => prop == globalProps[idx]);
+      });
+    },
     isVisible: function (element) {
       if (
         element.offsetWidth ||
