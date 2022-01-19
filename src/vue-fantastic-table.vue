@@ -1,5 +1,5 @@
 <template>
-  <table ref="fantasticTable">
+  <table class="dark" ref="fantasticTable">
     <thead>
       <tr>
         <th ref="headers" :key="index" v-for="({ label }, index) in headers">
@@ -186,13 +186,15 @@ th {
 }
 
 table.dark {
-  background-color: #202123;
+  background-color: #363636;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-
+table.dark > thead {
+  background-color: rgba(0, 0, 0, 0.746);
+}
 table.dark > thead > tr > th {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.281);
 }
 
 table.dark > tbody > tr > td {
