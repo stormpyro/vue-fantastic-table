@@ -19,6 +19,8 @@ Vue.component("vue-fantastic-table", VueFantasticTable)
 
 ### Features
 
+---
+
 #### Responsive mode
 
 Similar to the responsive mode of jquery datatables. When
