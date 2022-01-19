@@ -61,3 +61,15 @@ You can customize this message with the slot "loading".
       </template>
     </vue-fantastic-table>
 ```
+
+#### Themes
+
+You can change the table theme with the following classes:
+
+- dark
+- highlight
+- striped
+
+```
+<vue-fantastic-table class="dark" responsive :headers="headers" :rows="callRequest" />
+```
