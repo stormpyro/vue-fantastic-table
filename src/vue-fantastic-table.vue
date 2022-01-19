@@ -7,9 +7,15 @@
         </th>
       </tr>
     </thead>
-
-    <tbody>
-      <tr ref="rows" :key="index" v-for="(data, index) in rows">
+    <tbody v-if="loading">
+      <tr>
+        <td :colspan="headers.length">
+          <slot name="loading"> Loading... </slot>
+        </td>
+      </tr>
+    </tbody>
+    <tbody v-else>
+      <tr ref="rows" :key="index" v-for="(data, index) in serverData || rows">
         <td
           ref="cells"
           :key="index + prop_idx"
@@ -26,7 +32,7 @@ export default /*#__PURE__*/ {
   name: "VueFantasticTable", // vue component name
   props: {
     rows: {
-      type: Array,
+      type: Array | Function,
       required: true,
     },
     headers: {
@@ -41,7 +47,16 @@ export default /*#__PURE__*/ {
   data: () => ({
     width: document.documentElement.clientWidth,
     height: document.documentElement.clientHeight,
+    loading: false,
+    serverData: null,
   }),
+  created: async function () {
+    if (typeof this.rows == "function") {
+      this.loading = true;
+      this.serverData = await this.rows();
+      this.loading = false;
+    }
+  },
   mounted: function () {
     if (this.responsive) window.addEventListener("resize", this.responsiveMode);
   },

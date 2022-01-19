@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <vue-fantastic-table responsive :headers="headers" :rows="rows" />
+    <vue-fantastic-table responsive :headers="headers" :rows="callRequest">
+      <template #loading>
+        <div>Your custom component or message</div>
+      </template>
+    </vue-fantastic-table>
   </div>
 </template>
 <script>
@@ -71,6 +75,15 @@ export default Vue.extend({
       },
     ],
   }),
+  methods: {
+    callRequest: function () {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(this.rows);
+        }, 1100);
+      });
+    },
+  },
 });
 </script>
 
