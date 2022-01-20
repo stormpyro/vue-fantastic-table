@@ -73,3 +73,49 @@ You can change the table theme with the following classes:
 ```
 <vue-fantastic-table class="dark" responsive :headers="headers" :rows="callRequest" />
 ```
+
+#### Custom slots
+
+You can change the content that is displayed for each cell in the body. Only need to use slots
+with the name of the field that you set in headers prop.
+
+Example:
+
+```
+<vue-fantastic-table
+      :headers="headers"
+      :rows="callRequest"
+      class="dark"
+      responsive
+    >
+      <template #university="{ name, university }">
+        <div>{{ name + " studies in " + university }}</div>
+      </template>
+</vue-fantastic-table>
+...
+headers: [
+      { field: "name", label: "Name" },
+      { field: "age", label: "Age" },
+      { field: "sex", label: "Sex" },
+      { field: "district", label: "District" },
+      { field: "university", label: "University" },
+      { field: "carrer", label: "Carrer" },
+      { field: "job", label: "Job" },
+      { field: "experience", label: "Experience" },
+      { field: "investor", label: "Investor" },
+    ],
+rows: [
+      {
+        name: "Renatto",
+        age: 26,
+        sex: "M",
+        district: "La Perla",
+        university: "UNFV",
+        carrer: "Ing. Informatica",
+        job: "Software Developer",
+        experience: 2,
+        investor: "Yes",
+      },
+    ],
+...
+```
