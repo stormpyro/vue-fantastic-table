@@ -1,43 +1,72 @@
 <template>
-  <table ref="fantasticTable">
-    <thead>
-      <tr>
-        <th ref="headers" :key="index" v-for="({ label }, index) in headers">
-          {{ label }}
-        </th>
-      </tr>
-    </thead>
-    <tbody v-if="loading">
-      <tr>
-        <td :colspan="headers.length">
-          <slot name="loading"> Loading... </slot>
-        </td>
-      </tr>
-    </tbody>
-    <tbody v-else>
-      <tr v-if="!validData">
-        <td :colspan="headers.length">
-          <slot name="loading">Not valid data.</slot>
-        </td>
-      </tr>
-      <tr v-else-if="tableData.length == 0">
-        <td :colspan="headers.length">
-          <slot name="loading">Empty Data</slot>
-        </td>
-      </tr>
-      <tr v-else ref="rows" :key="row_idx" v-for="(data, row_idx) in tableData">
-        <td
-          ref="cells"
-          :key="row_idx + prop_idx"
-          v-for="(property, prop_idx) in Object.keys(data)"
+  <div>
+    <div
+      v-if="search"
+      style="margin-bottom: 10px; display: flex; justify-content: flex-end"
+    >
+      <div>
+        <input
+          id="search"
+          @input="globalSearch"
+          placeholder="Search"
+          type="text"
+          v-model="searchInput"
+        />
+      </div>
+    </div>
+
+    <table :class="{ dark }" ref="fantasticTable">
+      <thead>
+        <tr>
+          <th ref="headers" :key="index" v-for="({ label }, index) in headers">
+            {{ label }}
+          </th>
+        </tr>
+      </thead>
+      <tbody v-if="loading">
+        <tr>
+          <td :colspan="headers.length">
+            <slot name="loading">
+              <div class="flex-center">Loading...</div>
+            </slot>
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr v-if="!validData">
+          <td :colspan="headers.length">
+            <div class="flex-center">Not Valid Data</div>
+          </td>
+        </tr>
+        <tr v-else-if="tableData.length == 0">
+          <td :colspan="headers.length">
+            <div class="flex-center">Empty Data</div>
+          </td>
+        </tr>
+        <tr
+          v-else
+          ref="rows"
+          :key="row_idx"
+          v-for="(data, row_idx) in tableData"
         >
-          <slot v-bind="data" :name="property">
-            {{ data[property] }}
-          </slot>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <td
+            ref="cells"
+            :key="row_idx + prop_idx"
+            v-for="(property, prop_idx) in Object.keys(data)"
+          >
+            <slot v-bind="data" :name="property">
+              {{ data[property] }}
+            </slot>
+          </td>
+        </tr>
+        <tr v-if="emptyResults">
+          <td :colspan="headers.length">
+            <div class="flex-center">Empty Results</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 <script>
 export default /*#__PURE__*/ {
@@ -55,10 +84,20 @@ export default /*#__PURE__*/ {
       type: Boolean,
       default: false,
     },
+    dark: {
+      type: Boolean,
+      default: false,
+    },
+    search: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
+    emptyResults: false,
     height: document.documentElement.clientHeight,
     loading: false,
+    searchInput: "",
     tableData: [],
     validData: false,
     width: document.documentElement.clientWidth,
@@ -86,11 +125,27 @@ export default /*#__PURE__*/ {
     tableIsGrower: function () {
       return this.$refs.fantasticTable.clientWidth > this.width;
     },
-    columnCellsCounter: function () {
-      return 1 + this.$refs.rows.length;
-    },
   },
   methods: {
+    globalSearch: function () {
+      if (this.$refs.rows) {
+        const visibleRows = this.$refs.rows.filter(({ children }, row_idx) => {
+          const notFound = [...children].every(
+            ({ textContent }) =>
+              !textContent
+                .trim()
+                .toLowerCase()
+                .startsWith(this.searchInput.toLowerCase())
+          );
+          if (notFound) this.$refs.rows[row_idx].classList.add("hide");
+          else this.$refs.rows[row_idx].classList.remove("hide");
+
+          return this.isVisible(this.$refs.rows[row_idx]);
+        });
+        if (visibleRows.length == 0) this.emptyResults = true;
+        else this.emptyResults = false;
+      }
+    },
     validateData: function (data) {
       const globalProps = this.headers.map(({ field }) => field).sort();
       return data.every((element) => {
@@ -165,6 +220,12 @@ export default /*#__PURE__*/ {
 <style scoped>
 .hide {
   display: none;
+}
+
+.flex-center {
+  align-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 table {

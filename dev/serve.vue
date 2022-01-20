@@ -3,8 +3,9 @@
     <vue-fantastic-table
       :headers="headers"
       :rows="callRequest"
-      class="dark"
+      dark
       responsive
+      search
     >
       <template #university="{ name, university }">
         <div>{{ name + " studies in " + university }}</div>
