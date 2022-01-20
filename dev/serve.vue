@@ -5,7 +5,11 @@
       :rows="callRequest"
       class="dark"
       responsive
-    />
+    >
+      <template #university="{ name, university }">
+        <div>{{ name + " studies in " + university }}</div>
+      </template>
+    </vue-fantastic-table>
   </div>
 </template>
 <script>
@@ -40,6 +44,28 @@ export default Vue.extend({
         job: "Software Developer",
         experience: 2,
         investor: "Yes",
+      },
+      {
+        name: "Danixsa",
+        age: 26,
+        sex: "F",
+        district: "Chorrillos",
+        university: "UNFV",
+        carrer: "Ing. Alimentaria",
+        job: "Desarrolladora de innovacion",
+        experience: 3,
+        investor: "No",
+      },
+      {
+        name: "Vanessa",
+        age: 25,
+        sex: "F",
+        district: "San Isidro",
+        university: "Pacifico",
+        carrer: "Adm. de empresas",
+        job: "Admin",
+        experience: 4,
+        investor: "No",
       },
     ],
   }),

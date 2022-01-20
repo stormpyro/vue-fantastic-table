@@ -25,13 +25,13 @@
           <slot name="loading">Empty Data</slot>
         </td>
       </tr>
-      <tr v-else ref="rows" :key="index" v-for="(data, index) in tableData">
+      <tr v-else ref="rows" :key="row_idx" v-for="(data, row_idx) in tableData">
         <td
           ref="cells"
-          :key="index + prop_idx"
+          :key="row_idx + prop_idx"
           v-for="(property, prop_idx) in Object.keys(data)"
         >
-          <slot name="">
+          <slot v-bind="data" :name="property">
             {{ data[property] }}
           </slot>
         </td>
@@ -69,7 +69,6 @@ export default /*#__PURE__*/ {
       const rows = await this.rows();
       this.loading = false;
       this.validData = this.validateData(rows);
-      console.log(this.validData);
       if (this.validData) this.tableData = rows;
       return;
     }
