@@ -62,16 +62,12 @@ You can customize this message with the slot "loading".
     </vue-fantastic-table>
 ```
 
-#### Themes
+#### Dark Theme
 
-You can change the table theme with the following classes:
-
-- dark
-- highlight
-- striped
+You can use a dark theme of VFT using the prop "dark":
 
 ```
-<vue-fantastic-table class="dark" responsive :headers="headers" :rows="callRequest" />
+<vue-fantastic-table dark responsive :headers="headers" :rows="callRequest" />
 ```
 
 #### Custom slots
@@ -118,4 +114,18 @@ rows: [
       },
     ],
 ...
+```
+
+#### Search
+
+You can add the prop "search". That will add a search input at the top of VFT.
+
+```
+<vue-fantastic-table
+      :headers="headers"
+      :rows="callRequest"
+      dark
+      responsive
+      search
+    />
 ```
