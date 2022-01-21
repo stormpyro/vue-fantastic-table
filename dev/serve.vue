@@ -37,7 +37,7 @@ export default Vue.extend({
     ],
     rows: [
       {
-        name: "Renatto",
+        name: "John",
         age: 26,
         sex: "M",
         district: "La Perla",
@@ -48,7 +48,7 @@ export default Vue.extend({
         investor: "Yes",
       },
       {
-        name: "Danixsa",
+        name: "Maria",
         age: 26,
         sex: "F",
         district: "Chorrillos",
@@ -59,7 +59,7 @@ export default Vue.extend({
         investor: "No",
       },
       {
-        name: "Vanessa",
+        name: "Jennifer",
         age: 25,
         sex: "F",
         district: "San Isidro",
