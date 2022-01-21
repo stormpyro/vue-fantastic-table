@@ -15,7 +15,12 @@
       </div>
     </div>
 
-    <table style="width: 100%" :class="{ dark }" ref="fantasticTable">
+    <table
+      :class="{ dark }"
+      id="fantasticTable"
+      ref="fantasticTable"
+      style="width: 100%"
+    >
       <thead>
         <tr>
           <th ref="headers" :key="index" v-for="({ label }, index) in headers">
@@ -221,16 +226,15 @@ export default /*#__PURE__*/ {
       });
     },
     getAllColumns: function () {
-      const columns = [];
-      for (const [header_idx, header] of this.$refs.headers.entries()) {
-        const domCollection = [];
-        domCollection.push(header);
-        for (const row of this.$refs.rows) {
-          domCollection.push(row.children[header_idx]);
-        }
-        columns.push(domCollection);
-      }
-      return columns;
+      const col_idxs = this.$refs.headers.map((_, col_idx) => col_idx);
+
+      const allRows = document.getElementById("fantasticTable").rows;
+
+      const allColumns = col_idxs.map((col_idx) => {
+        return [...allRows].map(({ children }) => children[col_idx]);
+      });
+
+      return allColumns;
     },
     responsiveMode: function () {
       if (this.responsive) {

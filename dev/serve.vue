@@ -4,6 +4,7 @@
       :headers="headers"
       :rows="callRequest"
       dark
+      responsive
       search
       footerSearch
       headerSearch
