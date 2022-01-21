@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <table :class="{ dark }" ref="fantasticTable">
+    <table style="width: 100%" :class="{ dark }" ref="fantasticTable">
       <thead>
         <tr>
           <th ref="headers" :key="index" v-for="({ label }, index) in headers">
@@ -337,5 +337,10 @@ table.dark > tbody > tr > td {
 }
 table.dark > tfoot > tr > th {
   border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
 }
 </style>
