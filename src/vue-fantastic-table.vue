@@ -22,6 +22,16 @@
             {{ label }}
           </th>
         </tr>
+        <tr v-if="headerSearch">
+          <th :key="index" v-for="({ label, field }, index) in headers">
+            <input
+              :placeholder="label"
+              @input="columnSearch($event.target.value, index)"
+              type="text"
+              v-model="columnSearchInputs[field]"
+            />
+          </th>
+        </tr>
       </thead>
       <tbody v-if="loading">
         <tr>
@@ -50,7 +60,7 @@
           v-for="(data, row_idx) in tableData"
         >
           <td
-            ref="cells"
+            :ref="property"
             :key="row_idx + prop_idx"
             v-for="(property, prop_idx) in Object.keys(data)"
           >
@@ -65,6 +75,18 @@
           </td>
         </tr>
       </tbody>
+      <tfoot v-if="footerSearch">
+        <tr>
+          <th :key="index" v-for="({ label, field }, index) in headers">
+            <input
+              :placeholder="label"
+              @input="columnSearch($event.target.value, index)"
+              type="text"
+              v-model="columnSearchInputs[field]"
+            />
+          </th>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </template>
@@ -92,6 +114,14 @@ export default /*#__PURE__*/ {
       type: Boolean,
       default: false,
     },
+    footerSearch: {
+      type: Boolean,
+      default: false,
+    },
+    headerSearch: {
+      type: Boolean,
+      default: false,
+    },
   },
   data: () => ({
     emptyResults: false,
@@ -101,6 +131,7 @@ export default /*#__PURE__*/ {
     tableData: [],
     validData: false,
     width: document.documentElement.clientWidth,
+    columnSearchInputs: {},
   }),
   created: async function () {
     if (typeof this.rows == "function") {
@@ -127,6 +158,19 @@ export default /*#__PURE__*/ {
     },
   },
   methods: {
+    columnSearch: function (text, col_idx) {
+      const visibleRows = this.$refs.rows.filter(({ children }, row_idx) => {
+        const cellText = children[col_idx].textContent.trim().toLowerCase();
+        const notFound = !cellText.startsWith(text.trim().toLowerCase());
+        if (notFound) this.$refs.rows[row_idx].classList.add("hide");
+        else this.$refs.rows[row_idx].classList.remove("hide");
+
+        return this.isVisible(this.$refs.rows[row_idx]);
+      });
+
+      if (visibleRows.length == 0) this.emptyResults = true;
+      else this.emptyResults = false;
+    },
     globalSearch: function () {
       if (this.$refs.rows) {
         const visibleRows = this.$refs.rows.filter(({ children }, row_idx) => {
@@ -289,6 +333,9 @@ table.dark > thead > tr > th {
 }
 
 table.dark > tbody > tr > td {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+table.dark > tfoot > tr > th {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 </style>

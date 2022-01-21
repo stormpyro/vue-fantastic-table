@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/stormpyro/vue-fantastic-table.git"
   },
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Vue fantastic table with md and features like jquery datatables.",
   "keywords": ["vue", "datatables","tables", "materialize", "responsive"],
   "main": "dist/vue-fantastic-table.ssr.js",

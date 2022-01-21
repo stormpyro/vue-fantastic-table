@@ -4,8 +4,9 @@
       :headers="headers"
       :rows="callRequest"
       dark
-      responsive
       search
+      footerSearch
+      headerSearch
     >
       <template #university="{ name, university }">
         <div>{{ name + " studies in " + university }}</div>

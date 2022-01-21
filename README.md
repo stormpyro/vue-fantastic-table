@@ -129,3 +129,19 @@ You can add the prop "search". That will add a search input at the top of VFT.
       search
     />
 ```
+
+#### Header and Footer Search
+
+You can add search inputs for each header and for each footer. Only need to add these props "headerSearch" and "footerSearch".
+
+```
+<vue-fantastic-table
+    :headers="headers"
+    :rows="callRequest"
+    dark
+    footerSearch
+    headerSearch
+/>
+```
+
+![Alt text](/screenshots/footerHeaderSearch.png?raw=true "Footer And Header Search")
